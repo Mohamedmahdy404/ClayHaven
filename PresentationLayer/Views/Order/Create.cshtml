@@ -1,0 +1,196 @@
+﻿@model PresentationLayer.Actions_Request.Order.CreateOrderAction
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Order</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .form-group, .payment-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input[type="text"], button {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+           
+            .product-card img {
+                width: 120px; 
+                height: 120px; 
+                object-fit: cover; 
+                border-radius: 6px;
+                margin: 0 auto; 
+                display: block; 
+            }
+
+        .payment-group {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+            .payment-group label {
+                font-size: 16px;
+                color: #333;
+                margin-bottom: 15px;
+            }
+
+        #card-element {
+            background-color: white;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        #card-errors {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar (example) -->
+    <nav>
+    </nav>
+
+    <!-- Flex container to center the form -->
+    <div class="flex-container">
+        <div class="form-container">
+            <h2>Create Order</h2>
+            <form id="payment-form" asp-action="Create" method="post" enctype="multipart/form-data">
+                <!-- Customer Name Input -->
+                <div class="form-group">
+                    <label for="customerName">Customer Name:</label>
+                    <input type="text" id="customerName" name="CustomerName" placeholder="Enter customer name" required>
+                </div>
+
+                <!-- Product Selection -->
+                <div class="form-group">
+                    <label>Select Products:</label>
+                    <div class="products-container">
+                        @foreach (var product in ViewBag.GetProductVM)
+                        {
+                            <div class="product-card">
+                                <img src="/Photos/@product.PhotoLocation" alt="@product.Name">
+                                <label for="product-@product.ProductId">@product.Name - $@product.Price</label>
+                                <input type="checkbox" name="SelectedProductsId" value="@product.ProductId" id="product-@product.ProductId">
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Payment Section -->
+                <div class="payment-group">
+                    <label for="card-element">Enter your payment details:</label>
+                    <div id="card-element"></div> <!-- Stripe renders the card input field here -->
+                    <div id="card-errors" role="alert"></div>
+                </div>
+
+                <!-- Hidden Input for Payment Token -->
+                <input type="hidden" name="PaymentToken" id="payment-token">
+
+                <!-- Submit Button -->
+                <button type="submit">Pay and Create Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer (example) -->
+    <footer>
+    </footer>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = Stripe('pk_test_51R40K2K0i4ouTtOMlxOlCyR1mxmbHCeGVy9fezmtL8rn4Azq1AAYS6rXb9JP0Vpcl4GHdEfRJDC23slmRZTsfqaq00sL0K4ZvD'); // Replace with your Stripe publishable key
+        var elements = stripe.elements();
+        var card = elements.create('card');
+        card.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+        var cardErrors = document.getElementById('card-errors');
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const { token, error } = await stripe.createToken(card);
+
+            if (error) {
+                cardErrors.textContent = error.message;
+            } else {
+                document.getElementById('payment-token').value = token.id;
+                form.submit();
+            }
+        });
+    </script>
+</body>
+</html>

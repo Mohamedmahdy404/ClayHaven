@@ -1,0 +1,170 @@
+﻿
+@model List<PresentationLayer.VMs.Product.GetProductVM>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Grid</title>
+    <style>
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            position: relative;
+            width: 320px;
+            background: #191919;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+            .card::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                width: 100%;
+                height: 100%;
+                background: #a9958a;
+                transform: skewY(345deg);
+                transition: 0.5s;
+            }
+
+            .card:hover::before {
+                top: -70%;
+                transform: skewY(390deg);
+            }
+
+            .card::after {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                font-weight: 600;
+                font-size: 6em;
+                color: rgba(0, 0, 0, 0.1);
+            }
+
+        .imgBox {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+            .imgBox img {
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+                border-radius: 15px;
+            }
+
+        .contentBox {
+            padding: 20px;
+            text-align: center;
+        }
+
+            .contentBox h3 {
+                font-size: 18px;
+                color: white;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .contentBox .price {
+                font-size: 24px;
+                color: white;
+                font-weight: 700;
+                letter-spacing: 1px;
+            }
+
+            .contentBox .amount {
+                font-size: 18px;
+                color: #ccc;
+                font-weight: 500;
+                margin-top: 10px;
+            }
+
+        .actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .edit-btn {
+            background: #3498db;
+        }
+
+            .edit-btn:hover {
+                background: #2980b9;
+            }
+
+        .delete-btn {
+            background: #e74c3c;
+        }
+
+            .delete-btn:hover {
+                background: #c0392b;
+            }
+
+        .create-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            color: #000;
+            text-decoration: none;
+            background: #2ecc71;
+            border-radius: 30px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+            .create-btn:hover {
+                background: #27ae60;
+            }
+
+
+
+    </style>
+</head>
+<body>
+    <div class="product-grid">
+        @foreach (var product in Model)
+        {
+            <div class="card">
+                <div class="imgBox">
+                    <img src="~/Photos/@product.PhotoLocation" alt="@product.Name">
+                </div>
+                <div class="contentBox">
+                    <h3>@product.Name</h3>
+                    <h2 class="price">@product.Price $</h2>
+                    <p class="amount">Amount: @product.Amount</p>
+                    <div class="actions">
+                        <button class="edit-btn" onclick="window.location.href='@Url.Action("Edit", "Product", new { id = product.ProductId })'">Edit</button>
+                        <button class="delete-btn" onclick="window.location.href='@Url.Action("Delete", "Product", new { id = product.ProductId })'">Delete</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="@Url.Action("Create", "Product")" class="create-btn">Create New Product</a>
+    </div>
+</body>
+</html>

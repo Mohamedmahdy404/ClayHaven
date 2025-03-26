@@ -1,0 +1,60 @@
+﻿
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Orders Page</title>
+	<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      font-size: 18px;
+      padding: 12px 20px;
+      margin: 10px;
+      color: #fff;
+      background-color: #4caf50;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #45a049;
+    }
+
+    .button-secondary {
+      background-color: #007bff;
+    }
+
+    .button-secondary:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+	<h1>Manage Orders</h1>
+        <button class="button" onclick="window.location.href='@Url.Action("Display","Order")'">Display All Orders</button>
+	<button class="button button-secondary" onclick="window.location.href='@Url.Action("Create","Order")'">Create Order</button>
+</div>
+</body>
+</html>
