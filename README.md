@@ -1,14 +1,8 @@
 # ClayHaven 🏺🎨 - Handmade Clay E-commerce Platform
-<style>
-  .custom-img {
-    width: 400px;
-    border-radius: 15px;
-    object-fit: cover; 
-  }
-</style>
+
 
 <img src="https://raw.githubusercontent.com/Mohamedmahdy404/ClayHaven/refs/heads/master/PresentationLayer/wwwroot/images/Readme1.png" 
-     alt="ClayHaven Banner" class="custom-img"><br>
+     alt="ClayHaven Banner"><br>
 🚀 **ClayHaven** is an e-commerce platform built using **ASP.NET MVC (.NET 7)** that enables users to explore and purchase handmade clay designs. This project demonstrates a well-structured backend architecture, secure authentication, and seamless payment integration.
 
 ## 🌟 Features
@@ -85,6 +79,11 @@ Use the following test card details to simulate transactions:
 - **Expiration Date:** Any future date
 - **CVV:** Any 3-digit number
 
+## 🌍 Live Demo
+🎉 Try out **ClayHaven** live!  
+🔗 **[Live Demo](http://clayhaven.runasp.net/)**  
+
+📌 *Note:* The demo might take a few seconds to load initially, as the hosting service may put the app in sleep mode when inactive.
 
 
 ## 📜 License
