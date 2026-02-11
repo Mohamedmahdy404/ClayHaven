@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,9 +38,11 @@ namespace DataAccessLayer.Repositories.Generic
 
         public async Task Remove(Guid id)
         {
-           var x= await _dbContext.Set<T>().FindAsync(id);
-           _dbContext.Set<T>().Remove(x);
-           await _dbContext.SaveChangesAsync();
+            var entity = await _dbContext.Set<T>().FindAsync(id);
+            if (entity == null)
+                return;
+            _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task Update(T entity)
